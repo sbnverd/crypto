@@ -11,4 +11,7 @@ def get_bitcoin_price():
     return data['bitcoin']['usd']
 
 bitcoin_price = get_bitcoin_price()
+ethereum_price = get_crypto_price('ethereum')
+
 print(f"Current Bitcoin price in USD: ${bitcoin_price}")
+print(f"Current Ethereum price in USD: ${ethereum_price}")
