@@ -11,4 +11,4 @@ def get_bitcoin_price():
     return data['bitcoin']['usd']
 
 bitcoin_price = get_bitcoin_price()
-print(
+print(f"Current Bitcoin price in USD: ${bitcoin_price}")
