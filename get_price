@@ -12,6 +12,8 @@ def get_bitcoin_price():
 
 bitcoin_price = get_bitcoin_price()
 ethereum_price = get_crypto_price('ethereum')
+bnb_price = get_crypto_price('binancecoin')
 
 print(f"Current Bitcoin price in USD: ${bitcoin_price}")
 print(f"Current Ethereum price in USD: ${ethereum_price}")
+print(f"Current BNB price in USD: ${bnb_price}")
