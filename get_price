@@ -1,19 +1,32 @@
 import requests
+import csv
+from datetime import datetime, timedelta
 
-def get_bitcoin_price(crypto_id, currency='usd'):
-    url = "https://api.coingecko.com/api/v3/simple/price"
+def get_historical_data(crypto_id, currency='usd', days=365):
+    url = f"https://api.coingecko.com/api/v3/coins/{crypto_id}/market_chart"
     params = {
-        'ids': 'crypto_id',
-        'vs_currencies': 'currency'
+        'vs_currency': currency,
+        'days': days
     }
     response = requests.get(url, params=params)
     data = response.json()
-    return data[crypto_id][currency]
+    return data['prices']
 
-bitcoin_price = get_bitcoin_price('bitcoin')
-ethereum_price = get_crypto_price('ethereum')
-bnb_price = get_crypto_price('binancecoin')
+def save_to_csv(data, filename):
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Timestamp', 'Price'])
+        for price_point in data:
+            timestamp = datetime.utcfromtimestamp(price_point[0] / 1000).strftime('%Y-%m-%d %H:%M:%S')
+            price = price_point[1]
+            writer.writerow([timestamp, price])
 
-print(f"Current Bitcoin price in USD: ${bitcoin_price}")
-print(f"Current Ethereum price in USD: ${ethereum_price}")
-print(f"Current BNB price in USD: ${bnb_price}")
+bitcoin_data = get_historical_data('bitcoin')
+ethereum_data = get_historical_data('ethereum')
+bnb_data = get_historical_data('binancecoin')
+
+save_to_csv(bitcoin_data, 'bitcoin_prices.csv')
+save_to_csv(ethereum_data, 'ethereum_prices.csv')
+save_to_csv(bnb_data, 'bnb_prices.csv')
+
+print("Data has been saved to CSV files."
