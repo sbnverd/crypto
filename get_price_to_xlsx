@@ -1,0 +1,41 @@
+import requests
+import csv
+from datetime import datetime
+import openpyxl
+from openpyxl import Workbook
+
+def get_historical_data(crypto_id, currency='usd', days=365):
+    url = f"https://api.coingecko.com/api/v3/coins/{crypto_id}/market_chart"
+    params = {
+        'vs_currency': currency,
+        'days': days
+    }
+    response = requests.get(url, params=params)
+    data = response.json()
+    return data['prices']
+
+def save_to_excel(data_dict, filename):
+    workbook = Workbook()
+    for crypto_id, data in data_dict.items():
+        sheet = workbook.create_sheet(title=crypto_id.capitalize())
+        sheet.append(['Timestamp', 'Price'])
+        for price_point in data:
+            timestamp = datetime.utcfromtimestamp(price_point[0] / 1000).strftime('%Y-%m-%d %H:%M:%S')
+            price = price_point[1]
+            sheet.append([timestamp, price])
+    workbook.remove(workbook['Sheet'])  # Remove the default sheet
+    workbook.save(filename)
+
+bitcoin_data = get_historical_data('bitcoin')
+ethereum_data = get_historical_data('ethereum')
+bnb_data = get_historical_data('binancecoin')
+
+crypto_data = {
+    'Bitcoin': bitcoin_data,
+    'Ethereum': ethereum_data,
+    'BNB': bnb_data
+}
+
+save_to_excel(crypto_data, 'crypto_prices.xlsx')
+
+print("Data has been saved to an Excel file.")
