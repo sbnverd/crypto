@@ -1,0 +1,52 @@
+import requests
+import openpyxl
+from datetime import datetime
+
+def get_transactions(wallet_address, api_key, start_date, end_date):
+    start_timestamp = int(datetime.strptime(start_date, '%Y-%m-%d %H:%M:%S').timestamp())
+    end_timestamp = int(datetime.strptime(end_date, '%Y-%m-%d %H:%M:%S').timestamp())
+    
+    url = "https://api.etherscan.io/api"
+    params = {
+        'module': 'account',
+        'action': 'txlist',
+        'address': wallet_address,
+        'startblock': 0,
+        'endblock': 99999999,
+        'sort': 'asc',
+        'apikey': api_key
+    }
+    response = requests.get(url, params=params)
+    data = response.json()
+    transactions = [tx for tx in data['result'] if start_timestamp <= int(tx['timeStamp']) <= end_timestamp]
+    return transactions
+
+def save_to_excel(transactions, filename):
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet.title = "Transactions"
+    sheet.append(['Timestamp', 'From', 'To', 'Value (ETH)', 'Transaction Fee (ETH)', 'Net Amount (ETH)'])
+
+    for tx in transactions:
+        timestamp = datetime.utcfromtimestamp(int(tx['timeStamp'])).strftime('%Y-%m-%d %H:%M:%S')
+        from_address = tx['from']
+        to_address = tx['to']
+        value = int(tx['value']) / 10**18
+        gas_price = int(tx['gasPrice']) / 10**18
+        gas_used = int(tx['gasUsed'])
+        transaction_fee = gas_price * gas_used
+        net_amount = value - transaction_fee if from_address.lower() == wallet_address.lower() else value
+        
+        sheet.append([timestamp, from_address, to_address, value, transaction_fee, net_amount])
+
+    workbook.save(filename)
+
+# 使用例
+wallet_address = 'YOUR_WALLET_ADDRESS'
+api_key = 'YOUR_ETHERSCAN_API_KEY'
+start_date = '2024-01-01 00:00:00'
+end_date = '2025-01-01 00:00:00'
+transactions = get_transactions(wallet_address, api_key, start_date, end_date)
+save_to_excel(transactions, 'transaction_history.xlsx')
+
+print("Transaction history has been saved to an Excel file.")
