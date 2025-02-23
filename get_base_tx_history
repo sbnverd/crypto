@@ -1,0 +1,40 @@
+import requests
+import pandas as pd
+from datetime import datetime
+
+# BaseScan APIキーを設定
+API_KEY = 'YOUR_BASESCAN_API_KEY'
+# トランザクションを取得したいウォレットアドレスを設定
+ADDRESS = 'YOUR_WALLET_ADDRESS'
+# 年を指定
+YEAR = 2023
+# 開始日時と終了日時を設定 (UNIXタイムスタンプ形式)
+START_DATE = int(datetime(YEAR, 1, 1).timestamp())
+END_DATE = int(datetime(YEAR, 12, 31).timestamp())
+
+# トランザクション履歴を取得する関数
+def fetch_transactions(address, start_date, end_date, api_key):
+    url = f'https://api.basescan.io/api?module=account&action=txlist&address={address}&startblock=0&endblock=99999999&sort=asc&apikey={api_key}'
+    response = requests.get(url)
+    if response.status_code == 200:
+        transactions = response.json().get('result', [])
+        # 範囲内のトランザクションをフィルター
+        filtered_transactions = [tx for tx in transactions if start_date <= int(tx['timeStamp']) <= end_date]
+        return filtered_transactions
+    else:
+        return []
+
+# トランザクションデータを取得
+transactions = fetch_transactions(ADDRESS, START_DATE, END_DATE, API_KEY)
+
+# データをPandas DataFrameに変換
+df = pd.DataFrame(transactions)
+
+# トランザクションタイムスタンプを人間が読める形式に変換
+df['timeStamp'] = pd.to_datetime(df['timeStamp'], unit='s')
+
+# エクセルファイルに出力
+excel_file = f'transaction_history_{YEAR}.xlsx'
+df.to_excel(excel_file, index=False)
+
+print(f'Transaction history for the year {YEAR} has been saved to {excel_file}')
