@@ -22,7 +22,21 @@ def get_transactions(wallet_address, start_timestamp, end_timestamp, api_key):
         tx for tx in transactions if start_timestamp <= int(tx['timeStamp']) <= end_timestamp
     ]
     
-    return len(filtered_transactions)
+    return filtered_transactions
 
-transaction_count = get_transactions(wallet_address, start_timestamp, end_timestamp, api_key)
+#トランザクションが発生した日数を計算
+def get_transaction_days(transactions):
+    transaction_days = set()
+    for tx in transactions:
+        # トランザクションのタイムスタンプをUTCの日付に変換
+        tx_date = datetime.utcfromtimestamp(int(tx['timeStamp'])).date()
+        transaction_days.add(tx_date)
+    return len(transaction_days)
+
+
+transactions = get_transactions(wallet_address, start_timestamp, end_timestamp, api_key)
+transaction_count = len(transactions)
+transaction_days = get_transaction_days(transactions)
+
 print(f'Transactions from {start_date} to {end_date}: {transaction_count}')
+print(f'Transaction days (UTC): {transaction_days}')
