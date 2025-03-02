@@ -44,11 +44,24 @@ def get_transaction_weeks(transactions):
         transaction_weeks.add(start_of_week)
     return len
 
+# トランザクションが発生した月数を計算
+def get_transaction_months(transactions):
+    transaction_months = set()
+    for tx in transactions:
+        # トランザクションのタイムスタンプをUTCの年月に変換
+        tx_date = datetime.utcfromtimestamp(int(tx['timeStamp']))
+        transaction_month = (tx_date.year, tx_date.month)
+        transaction_months.add(transaction_month)
+    return len(transaction_months)
+
+
 transactions = get_transactions(wallet_address, start_timestamp, end_timestamp, api_key)
 transaction_count = len(transactions)
 transaction_days = get_transaction_days(transactions)
 transaction_weeks = get_transaction_weeks(transactions)
+transaction_months = get_transaction_months(transactions)
 
 print(f'Transactions from {start_date} to {end_date}: {transaction_count}')
 print(f'Transaction days (UTC): {transaction_days}')
 print(f'Transaction weeks (UTC): {transaction_weeks}')
+print(f'Transaction months (UTC): {transaction_months}')
