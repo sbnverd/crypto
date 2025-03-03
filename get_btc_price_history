@@ -1,0 +1,30 @@
+from pycoingecko import CoinGeckoAPI
+import pandas as pd
+import datetime
+
+# CoinGecko APIのクライアントを作成
+cg = CoinGeckoAPI()
+
+# 開始日時と終了日時を設定
+start_date = "2023-03-01" # 例: 2023年3月1日
+end_date = "2023-03-02"   # 例: 2023年3月2日
+
+# 日時をUNIXタイムスタンプに変換
+start_timestamp = int(datetime.datetime.strptime(start_date, "%Y-%m-%d").timestamp())
+end_timestamp = int(datetime.datetime.strptime(end_date, "%Y-%m-%d").timestamp())
+
+# 価格データを取得
+data = cg.get_coin_market_chart_range_by_id(id='bitcoin', vs_currency='usd', from_timestamp=start_timestamp, to_timestamp=end_timestamp)
+
+# データをDataFrameに変換
+prices = data['prices']
+df = pd.DataFrame(prices, columns=['timestamp', 'price'])
+
+# タイムスタンプを人間が読める形式に変換
+df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+
+# 1分ごとの価格データを表示
+print(df)
+
+# 必要に応じてCSVにエクスポート
+df.to_csv('bitcoin_prices.csv', index=False)
