@@ -1,0 +1,31 @@
+from pycoingecko import CoinGeckoAPI
+import pandas as pd
+import datetime
+
+# CoinGecko APIのクライアントを作成
+cg = CoinGeckoAPI()
+
+# Ethereum用の開始日時と終了日時を設定
+start_date_eth = "2023-03-01" # 例: 2023年3月1日
+end_date_eth = "2023-03-02"   # 例: 2023年3月2日
+
+# 日時をUNIXタイムスタンプに変換
+start_timestamp_eth = int(datetime.datetime.strptime(start_date_eth, "%Y-%m-%d").timestamp())
+end_timestamp_eth = int(datetime.datetime.strptime(end_date_eth, "%Y-%m-%d").timestamp())
+
+# Ethereumの価格データを取得
+data_eth = cg.get_coin_market_chart_range_by_id(id='ethereum', vs_currency='usd', from_timestamp=start_timestamp_eth, to_timestamp=end_timestamp_eth)
+
+# データをDataFrameに変換
+prices_eth = data_eth['prices']
+df_eth = pd.DataFrame(prices_eth, columns=['timestamp', 'price'])
+
+# タイムスタンプを人間が読める形式に変換
+df_eth['timestamp'] = pd.to_datetime(df_eth['timestamp'], unit='ms')
+
+# Ethereumの1分ごとの価格データを表示
+print("Ethereum Prices")
+print(df_eth)
+
+# 必要に応じてCSVにエクスポート
+df_eth.to_csv('ethereum_prices.csv', index=False
