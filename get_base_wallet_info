@@ -1,0 +1,37 @@
+from web3 import Web3
+import requests
+
+# RPCエンドポイント
+BASE_RPC_URL = "https://base.rpc.url"  # ここにBaseチェーンのRPC URLを設定
+
+# 接続設定
+web3 = Web3(Web3.HTTPProvider(BASE_RPC_URL))
+
+# ウォレットアドレスを設定
+wallet_address = "0xYourWalletAddressHere"
+
+# ERC-20トークンの残高を取得する関数
+def get_token_balance(wallet_address, token_contract_address, decimals):
+    contract = web3.eth.contract(address=token_contract_address, abi=[
+        {"constant": True, "inputs": [], "name": "symbol", "outputs": [{"name": "", "type": "string"}], "type": "function"},
+        {"constant": True, "inputs": [{"name": "owner", "type": "address"}], "name": "balanceOf", "outputs": [{"name": "balance", "type": "uint256"}], "type": "function"},
+        {"constant": True, "inputs": [], "name": "decimals", "outputs": [{"name": "", "type": "uint8"}], "type": "function"}
+    ])
+
+    symbol = contract.functions.symbol().call()
+    balance = contract.functions.balanceOf(wallet_address).call()
+    return f"{balance / 10**decimals} {symbol}"
+
+# トークンリスト（必要なトークンのコントラクトアドレスと小数点桁数を追加）
+tokens = [
+    {"contract_address": "0xTokenAddress1", "decimals": 18},
+    {"contract_address": "0xTokenAddress2", "decimals": 6},
+]
+
+# 各トークンの残高を取得
+for token in tokens:
+    try:
+        balance = get_token_balance(wallet_address, token["contract_address"], token["decimals"])
+        print(balance)
+    except Exception as e:
+        print(f"Error retrieving balance for token: {token['contract_address']}\n{e}")
