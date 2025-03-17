@@ -1,0 +1,54 @@
+import requests
+
+# Etherscan APIキー
+API_KEY = "YourAPIKeyHere"
+
+# ベースチェーンのAPIエンドポイント（ここではEtherscanの例）
+ETHERSCAN_API_URL = "https://api.etherscan.io/api"
+
+# ウォレットアドレス
+wallet_address = "0xYourWalletAddressHere"
+
+# トークンの保有情報を取得する関数
+def get_wallet_tokens(wallet_address):
+    # EtherscanのAPIエンドポイントを構成
+    params = {
+        "module": "account",
+        "action": "tokentx",
+        "address": wallet_address,
+        "startblock": 0,
+        "endblock": 99999999,
+        "sort": "asc",
+        "apikey": API_KEY
+    }
+    
+    # APIリクエスト
+    response = requests.get(ETHERSCAN_API_URL, params=params)
+    data = response.json()
+    
+    # 結果の解析
+    if data["status"] == "1":
+        token_contracts = set()
+        for tx in data["result"]:
+            token_contracts.add(tx["contractAddress"])
+        return token_contracts
+    else:
+        print("Error fetching data:", data["message"])
+        return []
+
+# ウォレットが保有するトークンのコントラクトアドレスを取得
+tokens = get_wallet_tokens(wallet_address)
+print("Tokens contract addresses in the wallet:")
+for token in tokens:
+    print(token)
+
+
+#解説
+#APIのパラメータ設定:
+#module: accountを指定してアカウント情報を取得。
+#action: tokentxでトークントランザクションを取得。
+#address: ウォレットアドレス。
+#apikey: Etherscanから取得したAPIキー。
+
+#結果解析:
+#保有しているトークンのコントラクトアドレスをリスト化して出力します。
