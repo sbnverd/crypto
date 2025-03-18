@@ -1,0 +1,58 @@
+import requests
+from web3 import Web3
+
+# BaseチェーンのRPCエンドポイント
+BASE_RPC_URL = "https://base.rpc.url"  # BaseチェーンのRPC URLを設定
+
+# Web3接続設定
+web3 = Web3(Web3.HTTPProvider(BASE_RPC_URL))
+
+# ウォレットアドレスを設定
+wallet_address = "0xYourWalletAddressHere"
+
+# トランザクション履歴からトークンコントラクトを取得する関数
+def get_token_contracts(wallet_address):
+    # BaseチェーンエクスプローラーのAPIエンドポイントを使用して取得
+    explorer_api_url = "https://base-explorer.api/tokentx"  # 仮のエンドポイント
+    params = {
+        "module": "account",
+        "action": "tokentx",
+        "address": wallet_address,
+        "startblock": 0,
+        "endblock": 99999999,
+        "sort": "asc"
+    }
+    response = requests.get(explorer_api_url, params=params)
+    data = response.json()
+
+    # コントラクトアドレスを抽出
+    token_contracts = set()
+    if "result" in data:
+        for tx in data["result"]:
+            token_contracts.add(tx["contractAddress"])
+    
+    return token_contracts
+
+# トークンコントラクトアドレスを取得
+try:
+    token_contracts = get_token_contracts(wallet_address)
+    print("ウォレットが保有するトークンのコントラクトアドレス:")
+    for contract in token_contracts:
+        print(contract)
+except Exception as e:
+    print("エラーが発生しました:", e)
+
+
+コードの説明
+RPC接続: Web3ライブラリを使用して、Baseチェーンに接続します。
+
+トランザクション履歴の取得: get_token_contracts関数で、ウォレットアドレスに関連するERC-20トークントランザクションを取得します。
+
+トークンコントラクト情報の解析: APIレスポンスからトークンコントラクトアドレスを抽出します。
+
+注意点
+APIエンドポイント: 上記のexplorer_api_urlは仮のものです。Baseチェーンの公式エクスプローラーAPIが提供されている場合、正確なURLを使用してください。
+
+APIキー: APIキーが必要な場合、URLのパラメータに追加してください。
+
+制限: トークン残高の取得まではカバーしていません。残高も含めたい場合は、各コントラクトに対してbalanceOf関数を呼び出す必要があります。
