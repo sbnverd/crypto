@@ -1,3 +1,11 @@
+# 使用例
+wallet_address = 'YOUR_WALLET_ADDRESS'
+api_key = 'YOUR_ETHERSCAN_API_KEY'
+tokens = get_erc20_tokens(wallet_address, api_key)
+for symbol, info in tokens.items():
+    print(f"Token: {info['name']} ({symbol}), Quantity: {info['quantity']}")
+
+
 import requests
 
 def get_erc20_tokens(wallet_address, api_key):
@@ -26,10 +34,3 @@ def get_erc20_tokens(wallet_address, api_key):
                 'quantity': token_quantity
             }
     return tokens
-
-# 使用例
-wallet_address = 'YOUR_WALLET_ADDRESS'
-api_key = 'YOUR_ETHERSCAN_API_KEY'
-tokens = get_erc20_tokens(wallet_address, api_key)
-for symbol, info in tokens.items():
-    print(f"Token: {info['name']} ({symbol}), Quantity: {info['quantity']}")
