@@ -1,3 +1,4 @@
+#############################################################################
 # 使用例
 wallet_address = 'YOUR_WALLET_ADDRESS'
 api_key = 'YOUR_ETHERSCAN_API_KEY'
