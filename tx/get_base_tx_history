@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 from datetime import datetime
 
+##設定関連
 # BaseScan APIキーを設定
 API_KEY = 'YOUR_BASESCAN_API_KEY'
 # トランザクションを取得したいウォレットアドレスを設定
@@ -11,6 +12,7 @@ YEAR = 2023
 # 開始日時と終了日時を設定 (UNIXタイムスタンプ形式)
 START_DATE = int(datetime(YEAR, 1, 1).timestamp())
 END_DATE = int(datetime(YEAR, 12, 31).timestamp())
+
 
 # トランザクション履歴を取得する関数
 def fetch_transactions(address, start_date, end_date, api_key):
