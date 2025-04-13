@@ -37,5 +37,4 @@ crypto_data = {
 }
 
 save_to_excel(crypto_data, 'crypto_prices.xlsx')
-
 print("Data has been saved to an Excel file.")
