@@ -29,4 +29,5 @@ save_to_csv(bitcoin_data, 'bitcoin_prices.csv')
 save_to_csv(ethereum_data, 'ethereum_prices.csv')
 save_to_csv(bnb_data, 'bnb_prices.csv')
 
+
 print("Data has been saved to CSV files.")
