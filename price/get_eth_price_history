@@ -5,7 +5,7 @@ import datetime
 # CoinGecko APIのクライアントを作成
 cg = CoinGeckoAPI()
 
-# Ethereum用の開始日時と終了日時を設定
+# 開始日時と終了日時を設定
 start_date_eth = "2023-03-01" # 例: 2023年3月1日
 end_date_eth = "2023-03-02"   # 例: 2023年3月2日
 
