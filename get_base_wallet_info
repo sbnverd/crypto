@@ -2,7 +2,8 @@ from web3 import Web3
 import requests
 
 # RPCエンドポイント
-BASE_RPC_URL = "https://base.rpc.url"  # ここにBaseチェーンのRPC URLを設定
+# ここにBaseチェーンのRPC URLを設定
+BASE_RPC_URL = "https://base.rpc.url"  
 
 # 接続設定
 web3 = Web3(Web3.HTTPProvider(BASE_RPC_URL))
