@@ -29,6 +29,7 @@ tokens = [
     {"contract_address": "0xTokenAddress2", "decimals": 6},
 ]
 
+
 # 各トークンの残高を取得
 for token in tokens:
     try:
