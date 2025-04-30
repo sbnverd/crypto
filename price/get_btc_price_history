@@ -6,8 +6,10 @@ import datetime
 cg = CoinGeckoAPI()
 
 # 開始日時と終了日時を設定
-start_date = "2023-03-01" # 例: 2023年3月1日
-end_date = "2023-03-02"   # 例: 2023年3月2日
+#開始日時
+start_date = "2023-03-01"
+#終了日時
+end_date = "2023-03-02"
 
 # 日時をUNIXタイムスタンプに変換
 start_timestamp = int(datetime.datetime.strptime(start_date, "%Y-%m-%d").timestamp())
