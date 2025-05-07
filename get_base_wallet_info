@@ -1,7 +1,6 @@
 from web3 import Web3
 import requests
-
-# RPCエンドポイント
+s
 # ここにBaseチェーンのRPC URLを設定
 BASE_RPC_URL = "https://base.rpc.url"  
 
