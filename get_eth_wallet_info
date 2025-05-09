@@ -1,4 +1,4 @@
-# 使用例
+# 例
 # wallet_address = 'YOUR_WALLET_ADDRESS'
 # api_key = 'YOUR_ETHERSCAN_API_KEY'
 # tokens = get_erc20_tokens(wallet_address, api_key)
