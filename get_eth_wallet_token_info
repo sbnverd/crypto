@@ -1,4 +1,4 @@
-# APIのパラメータ設定:
+# APIのパラメータ設定
 # module: accountを指定してアカウント情報を取得
 # action: tokentxでトークントランザクションを取得
 # address: ウォレットアドレス
