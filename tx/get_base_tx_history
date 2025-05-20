@@ -2,7 +2,6 @@ import requests
 import pandas as pd
 from datetime import datetime
 
-##設定
 # BaseScan APIキーを設定
 API_KEY = 'YOUR_BASESCAN_API_KEY'
 # トランザクションを取得したいウォレットアドレスを設定
