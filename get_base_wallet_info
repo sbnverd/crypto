@@ -7,7 +7,7 @@ BASE_RPC_URL = "https://base.rpc.url"
 # 接続設定
 web3 = Web3(Web3.HTTPProvider(BASE_RPC_URL))
 
-# ウォレットアドレスを設定
+# ウォレットアドレス設定
 wallet_address = "0xYourWalletAddressHere"
 
 # ERC-20トークンの残高を取得する関数
