@@ -10,7 +10,7 @@ web3 = Web3(Web3.HTTPProvider(BASE_RPC_URL))
 # ウォレットアドレス設定
 wallet_address = "0xYourWalletAddressHere"
 
-# ERC-20トークンの残高を取得する
+# ERC-20トークンの残高を取得
 def get_token_balance(wallet_address, token_contract_address, decimals):
     contract = web3.eth.contract(address=token_contract_address, abi=[
         {"constant": True, "inputs": [], "name": "symbol", "outputs": [{"name": "", "type": "string"}], "type": "function"},
