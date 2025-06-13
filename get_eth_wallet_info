@@ -3,8 +3,7 @@
 # api_key = 'YOUR_ETHERSCAN_API_KEY'
 # tokens = get_erc20_tokens(wallet_address, api_key)
 # for symbol, info in tokens.items():
-#     print(f"Token: {info['name']} ({symbol}), Quantity: {info['quantity']}")
-#
+#     print(f"Token: {info['name']} ({symbol}), Quantity: {info['quantity']}"
 
 
 import requests
