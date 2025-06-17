@@ -7,7 +7,6 @@
 # 結果出力
 # 保有しているトークンのコントラクトアドレスをリスト化して出力
 
-
 import requests
 
 # Etherscan APIキー
